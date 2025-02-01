@@ -4,11 +4,15 @@ using System.IO;
 using System.Collections.Generic;
 using System;
 using Newtonsoft.Json;
+using System.Windows.Forms;
+using Unity.VisualScripting;
 public class ExportToCapcut : MonoBehaviour
 {
     [SerializeField]
     AutoEditorMenu menu;
     CapcutFormatClass capcutProject = new CapcutFormatClass();
+
+    static Vector2 defaultZoomSize = Vector2.one;
     public void SearchCapcutFile()
     {
         var bp = new BrowserProperties();
@@ -32,7 +36,6 @@ public class ExportToCapcut : MonoBehaviour
         {
             NullValueHandling = NullValueHandling.Ignore
         });
-
 
         CapcutFormatClass groupedCapcutClass = CompoundGroupEditedFileOrder(capcutDeserialized, path[0]);
 
@@ -68,8 +71,13 @@ public class ExportToCapcut : MonoBehaviour
 
         int lastVideoEndingMilisecond = 25000;
         int lastFragmentEndedMilisecond = 0;
+        string lastFragmentFilename = "";
+
+        float randomZoom = 0;
+        Vector2 appliedZoom = new Vector2();
         foreach (VideoFileData videoFileData in menu.finalVideoFilesDataWithMargins)
         {
+            
             foreach (SpeakAndSilenceAudioData fragment in videoFileData.audioData)
             {
                 if (!fragment.IsSpeaking && !menu.analisysSettings.saveSilencesToggle.isOn)
@@ -80,7 +88,27 @@ public class ExportToCapcut : MonoBehaviour
 
                 int fragmentStartInCapcutSeconds = (int)(fragment.StartInSamples / lastVideoFileData.AudioSampleRate / videoFileData.audioChannelsNumber * 1000000);
                 int fragmentDurationInCapcutSeconds = (int)(fragment.DurationInSamples / lastVideoFileData.AudioSampleRate / videoFileData.audioChannelsNumber * 1000000);
-                Segment segmentCopyVar = CreateSegment(capcutDeserialized.tracks[0].segments[0], fragmentStartInCapcutSeconds, fragmentDurationInCapcutSeconds, lastVideoEndingMilisecond + lastFragmentEndedMilisecond, fragmentDurationInCapcutSeconds, videoID, draftID[videoFileData.fileTitle]);
+                if (menu.analisysSettings.addZoomsInSequential.isOn)
+                {
+                    if(lastFragmentFilename == videoFileData.fileTitle)
+                    {
+                        if(appliedZoom.x < 1.5f)
+                        {
+                            randomZoom = 1.0f + ((float)UnityEngine.Random.Range(5,8)/10.0f);
+                        }
+                        else
+                        {
+                            randomZoom = 1.0f + ((float)UnityEngine.Random.Range(0, 2) / 10.0f);
+                        }
+                        appliedZoom = new Vector2(randomZoom,randomZoom);
+                    }
+                    else
+                    {
+                        appliedZoom = Vector2.one;
+                    }
+                }
+                lastFragmentFilename = videoFileData.fileTitle;
+                Segment segmentCopyVar = CreateSegment(capcutDeserialized.tracks[0].segments[0], fragmentStartInCapcutSeconds, fragmentDurationInCapcutSeconds, lastVideoEndingMilisecond + lastFragmentEndedMilisecond, fragmentDurationInCapcutSeconds, videoID, draftID[videoFileData.fileTitle],appliedZoom);
                 videoTimesGroups.Add(segmentCopyVar);
                 lastFragmentEndedMilisecond = segmentCopyVar.target_timerange.duration + segmentCopyVar.target_timerange.start;
             }
@@ -120,7 +148,8 @@ public class ExportToCapcut : MonoBehaviour
         videoDraft.draft.materials.videos[0] = CreateVideoData(videoDraft.draft.materials.videos[0], videoDraft.draft.duration,videoFileData.fileTitle,videoFileData.videoFilePath,out videoID);
         videoDraft.draft.tracks[0].id = Guid.NewGuid().ToString();
         videoDraft.draft.tracks[0].type = "video";
-        videoDraft.draft.tracks[0].segments[0] = CreateSegment(videoDraft.draft.tracks[0].segments[0],0, videoDraft.draft.duration, 0, videoDraft.draft.duration, videoID, "");
+
+        videoDraft.draft.tracks[0].segments[0] = CreateSegment(videoDraft.draft.tracks[0].segments[0],0, videoDraft.draft.duration, 0, videoDraft.draft.duration, videoID, "",defaultZoomSize);
         if (!draftID.ContainsKey(videoFileData.fileTitle))
         {
             draftID.Add(videoFileData.fileTitle, videoDraft.id);
@@ -142,13 +171,15 @@ public class ExportToCapcut : MonoBehaviour
         return videoData;
     }
 
-    private static Segment CreateSegment(Segment previewSegmentData,int sampleStartInCapcutMiliseconds, int sampleDurationInCapcutMiliseconds, int timelineStartInCapcutMiliseconds, int timelineDurationInCapcutMiliseconds, string videoID,string extraMaterialRefID)
+    private static Segment CreateSegment(Segment previewSegmentData,int sampleStartInCapcutMiliseconds, int sampleDurationInCapcutMiliseconds, int timelineStartInCapcutMiliseconds, int timelineDurationInCapcutMiliseconds, string videoID,string extraMaterialRefID,Vector2 zoomSize)
     {
         string previewSegmentInString = JsonConvert.SerializeObject(previewSegmentData);
         Segment segmentData = JsonConvert.DeserializeObject<Segment>(previewSegmentInString);
         segmentData.id = Guid.NewGuid().ToString();
         segmentData.material_id = videoID;
         segmentData.extra_material_refs[0] = extraMaterialRefID;
+        segmentData.clip.scale.x = zoomSize.x;
+        segmentData.clip.scale.y = zoomSize.y;
         segmentData.source_timerange = new Source_Timerange
         {
             start = sampleStartInCapcutMiliseconds,

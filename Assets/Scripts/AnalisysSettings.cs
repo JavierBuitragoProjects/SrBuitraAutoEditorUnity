@@ -9,6 +9,7 @@ public class AnalisysSettings : MonoBehaviour
     public GameObject orderFromDialogButton;
     public Toggle addAllDataAfterDialogToggle;
     public Toggle addSpeechToText;
+    public Toggle addZoomsInSequential;
     public Slider volumeThreshold;
     public Slider marginInSecondsThreshold;
     public Slider videoTimeline;
