@@ -44,7 +44,7 @@ public class ExportToCapcut : MonoBehaviour
         string simplifiedString = JsonConvert.SerializeObject(groupedCapcutClass);
         simplified = JsonConvert.DeserializeObject<SimplifiedCapcutFormatClass>(simplifiedString);
         File.WriteAllText("D:\\descargas\\converted.json", JsonConvert.SerializeObject(simplified));
-
+        Debug.Log("Export completed");
     }
     private CapcutFormatClass CompoundGroupEditedFileOrder(CapcutFormatClass capcutDeserialized,string capcutfilePath)
     {
