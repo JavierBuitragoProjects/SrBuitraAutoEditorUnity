@@ -75,9 +75,23 @@ public class OrderByDialog : MonoBehaviour
             }
             finalVideoFiles.Add(dialogSegment);
         }
-
         if (menu.analisysSettings.addAllDataAfterDialogToggle.isOn)
         {
+            //remove used fragments
+            foreach (VideoFileData videoFileData in finalVideoFiles)
+            {
+                foreach (VideoFileData notAddedVideoFile in notAddedVideoFiles)
+                {
+                    foreach (SpeakAndSilenceAudioData audioData in videoFileData.audioData)
+                    {
+                        if (notAddedVideoFile.audioData.Contains(audioData))
+                        {
+                            notAddedVideoFile.audioData.Remove(audioData);
+                        }
+                    }
+                }
+                
+            }
             foreach (VideoFileData videoData in menu.videoFilesDataWithMargins)
             {
                 VideoFileData notAddedDialogSegment = new VideoFileData();
@@ -90,6 +104,7 @@ public class OrderByDialog : MonoBehaviour
 
                 foreach (VideoFileData notAddedVF in notAddedVideoFiles)
                 {
+                    
                     if(videoData.fileTitle == notAddedVF.fileTitle)
                     {
                         foreach (var notAdded in notAddedVF.audioData)
