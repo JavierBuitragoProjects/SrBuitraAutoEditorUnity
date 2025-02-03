@@ -2,11 +2,11 @@
 public class CapcutFormatClass
 {
     public Canvas_Config canvas_config { get; set; }
-    public int color_space { get; set; }
+    public long color_space { get; set; }
     public Config config { get; set; }
     public object cover { get; set; }
-    public int create_time { get; set; }
-    public int duration { get; set; }
+    public long create_time { get; set; }
+    public long duration { get; set; }
     public object extra_info { get; set; }
     public float fps { get; set; }
     public bool free_render_index_mode_on { get; set; }
@@ -30,37 +30,37 @@ public class CapcutFormatClass
     public string static_cover_image_path { get; set; }
     public object time_marks { get; set; }
     public Track[] tracks { get; set; }
-    public int update_time { get; set; }
-    public int version { get; set; }
+    public long update_time { get; set; }
+    public long version { get; set; }
 }
 
 public class Canvas_Config
 {
     public object background { get; set; }
-    public int height { get; set; }
+    public long height { get; set; }
     public string ratio { get; set; }
-    public int width { get; set; }
+    public long width { get; set; }
 }
 
 public class Config
 {
-    public int adjust_max_index { get; set; }
+    public long adjust_max_index { get; set; }
     public object[] attachment_info { get; set; }
-    public int combination_max_index { get; set; }
+    public long combination_max_index { get; set; }
     public object export_range { get; set; }
-    public int extract_audio_last_index { get; set; }
+    public long extract_audio_last_index { get; set; }
     public string lyrics_recognition_id { get; set; }
     public bool lyrics_sync { get; set; }
     public object[] lyrics_taskinfo { get; set; }
-    public bool maintrack_adsorb { get; set; }
-    public int material_save_mode { get; set; }
+    public bool malongrack_adsorb { get; set; }
+    public long material_save_mode { get; set; }
     public string multi_language_current { get; set; }
     public object[] multi_language_list { get; set; }
     public string multi_language_main { get; set; }
     public string multi_language_mode { get; set; }
-    public int original_sound_last_index { get; set; }
-    public int record_audio_last_index { get; set; }
-    public int sticker_max_index { get; set; }
+    public long original_sound_last_index { get; set; }
+    public long record_audio_last_index { get; set; }
+    public long sticker_max_index { get; set; }
     public object subtitle_keywords_config { get; set; }
     public string subtitle_recognition_id { get; set; }
     public bool subtitle_sync { get; set; }
@@ -84,7 +84,7 @@ public class Keyframes
 
 public class Last_Modified_Platform
 {
-    public int app_id { get; set; }
+    public long app_id { get; set; }
     public string app_source { get; set; }
     public string app_version { get; set; }
     public string device_id { get; set; }
@@ -153,7 +153,7 @@ public class Canvas
     public string image { get; set; }
     public string image_id { get; set; }
     public string image_name { get; set; }
-    public int source_platform { get; set; }
+    public long source_platform { get; set; }
     public string team_id { get; set; }
     public string type { get; set; }
 }
@@ -189,7 +189,7 @@ public class Placeholder_Infos
 
 public class Sound_Channel_Mappings
 {
-    public int audio_channel_mapping { get; set; }
+    public long audio_channel_mapping { get; set; }
     public string id { get; set; }
     public bool is_config_open { get; set; }
     public string type { get; set; }
@@ -199,7 +199,7 @@ public class Speed
 {
     public object curve_speed { get; set; }
     public string id { get; set; }
-    public int mode { get; set; }
+    public long mode { get; set; }
     public float speed { get; set; }
     public string type { get; set; }
 }
@@ -215,26 +215,26 @@ public class Video
     public string cartoon_path { get; set; }
     public string category_id { get; set; }
     public string category_name { get; set; }
-    public int check_flag { get; set; }
+    public long check_flag { get; set; }
     public Crop crop { get; set; }
     public string crop_ratio { get; set; }
     public float crop_scale { get; set; }
-    public int duration { get; set; }
-    public int extra_type_option { get; set; }
+    public long duration { get; set; }
+    public long extra_type_option { get; set; }
     public string formula_id { get; set; }
     public object freeze { get; set; }
     public bool has_audio { get; set; }
     public bool has_sound_separated { get; set; }
-    public int height { get; set; }
+    public long height { get; set; }
     public string id { get; set; }
-    public string intensifies_audio_path { get; set; }
-    public string intensifies_path { get; set; }
+    public string longensifies_audio_path { get; set; }
+    public string longensifies_path { get; set; }
     public bool is_ai_generate_content { get; set; }
     public bool is_copyright { get; set; }
     public bool is_text_edit_overdub { get; set; }
     public bool is_unified_beauty_mode { get; set; }
     public string live_photo_cover_path { get; set; }
-    public int live_photo_timestamp { get; set; }
+    public long live_photo_timestamp { get; set; }
     public string local_id { get; set; }
     public string local_material_from { get; set; }
     public string local_material_id { get; set; }
@@ -251,17 +251,17 @@ public class Video
     public string picture_set_category_id { get; set; }
     public string picture_set_category_name { get; set; }
     public string request_id { get; set; }
-    public string reverse_intensifies_path { get; set; }
+    public string reverse_longensifies_path { get; set; }
     public string reverse_path { get; set; }
     public object smart_match_info { get; set; }
     public object smart_motion { get; set; }
-    public int source { get; set; }
-    public int source_platform { get; set; }
+    public long source { get; set; }
+    public long source_platform { get; set; }
     public Stable stable { get; set; }
     public string team_id { get; set; }
     public string type { get; set; }
     public Video_Algorithm video_algorithm { get; set; }
-    public int width { get; set; }
+    public long width { get; set; }
 }
 
 public class Crop
@@ -279,12 +279,12 @@ public class Crop
 public class Matting
 {
     public string custom_matting_id { get; set; }
-    public int expansion { get; set; }
-    public int feather { get; set; }
-    public int flag { get; set; }
+    public long expansion { get; set; }
+    public long feather { get; set; }
+    public long flag { get; set; }
     public bool has_use_quick_brush { get; set; }
     public bool has_use_quick_eraser { get; set; }
-    public object[] interactiveTime { get; set; }
+    public object[] longeractiveTime { get; set; }
     public string path { get; set; }
     public bool reverse { get; set; }
     public object[] strokes { get; set; }
@@ -293,14 +293,14 @@ public class Matting
 public class Stable
 {
     public string matrix_path { get; set; }
-    public int stable_level { get; set; }
+    public long stable_level { get; set; }
     public Time_Range time_range { get; set; }
 }
 
 public class Time_Range
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 
 public class Video_Algorithm
@@ -323,7 +323,7 @@ public class Video_Algorithm
 
 public class Vocal_Separations
 {
-    public int choice { get; set; }
+    public long choice { get; set; }
     public string id { get; set; }
     public string production_path { get; set; }
     public object[] removed_sounds { get; set; }
@@ -333,7 +333,7 @@ public class Vocal_Separations
 
 public class Platform
 {
-    public int app_id { get; set; }
+    public long app_id { get; set; }
     public string app_source { get; set; }
     public string app_version { get; set; }
     public string device_id { get; set; }
@@ -345,8 +345,8 @@ public class Platform
 
 public class Track
 {
-    public int attribute { get; set; }
-    public int flag { get; set; }
+    public long attribute { get; set; }
+    public long flag { get; set; }
     public string id { get; set; }
     public bool is_default_name { get; set; }
     public string name { get; set; }
@@ -375,7 +375,7 @@ public class Segment
     public string group_id { get; set; }
     public Hdr_Settings hdr_settings { get; set; }
     public string id { get; set; }
-    public bool intensifies_audio { get; set; }
+    public bool longensifies_audio { get; set; }
     public bool is_loop { get; set; }
     public bool is_placeholder { get; set; }
     public bool is_tone_modify { get; set; }
@@ -384,18 +384,18 @@ public class Segment
     public object lyric_keyframes { get; set; }
     public string material_id { get; set; }
     public string raw_segment_id { get; set; }
-    public int render_index { get; set; }
+    public long render_index { get; set; }
     public Render_Timerange render_timerange { get; set; }
     public Responsive_Layout responsive_layout { get; set; }
     public bool reverse { get; set; }
     public Source_Timerange source_timerange { get; set; }
     public float speed { get; set; }
-    public int state { get; set; }
+    public long state { get; set; }
     public Target_Timerange target_timerange { get; set; }
     public string template_id { get; set; }
     public string template_scene { get; set; }
-    public int track_attribute { get; set; }
-    public int track_render_index { get; set; }
+    public long track_attribute { get; set; }
+    public long track_render_index { get; set; }
     public Uniform_Scale uniform_scale { get; set; }
     public bool visible { get; set; }
     public float volume { get; set; }
@@ -430,36 +430,36 @@ public class Transform
 
 public class Hdr_Settings
 {
-    public float intensity { get; set; }
-    public int mode { get; set; }
-    public int nits { get; set; }
+    public float longensity { get; set; }
+    public long mode { get; set; }
+    public long nits { get; set; }
 }
 
 public class Render_Timerange
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 
 public class Responsive_Layout
 {
     public bool enable { get; set; }
-    public int horizontal_pos_layout { get; set; }
-    public int size_layout { get; set; }
+    public long horizontal_pos_layout { get; set; }
+    public long size_layout { get; set; }
     public string target_follow { get; set; }
-    public int vertical_pos_layout { get; set; }
+    public long vertical_pos_layout { get; set; }
 }
 
 public class Source_Timerange
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 
 public class Target_Timerange
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 
 public class Uniform_Scale

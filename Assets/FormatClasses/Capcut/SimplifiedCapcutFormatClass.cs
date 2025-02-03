@@ -31,8 +31,8 @@ public class SimplifiedVideo
 
 public class SimplifiedTime_Range
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 
 public class SimplifiedTrack
@@ -57,13 +57,13 @@ public class SimplifiedSegment
 
 public class SimplifiedSource_Timerange
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 
 public class SimplifiedTarget_Timerange
 {
-    public int duration { get; set; }
-    public int start { get; set; }
+    public long duration { get; set; }
+    public long start { get; set; }
 }
 

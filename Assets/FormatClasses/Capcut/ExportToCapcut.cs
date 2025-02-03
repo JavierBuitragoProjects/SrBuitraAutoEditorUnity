@@ -69,12 +69,12 @@ public class ExportToCapcut : MonoBehaviour
         List<Video> videoReferencesToGroups = new List<Video>();
         List<Segment> videoTimesGroups = new List<Segment>();
 
-        int lastVideoEndingMilisecond = 25000;
-        int lastFragmentEndedMilisecond = 0;
+        long lastVideoEndingMilisecond = 25000;
+        long lastFragmentEndedMilisecond = 0;
         string lastFragmentFilename = "";
 
-        float randomZoom = 0;
-        Vector2 appliedZoom = new Vector2();
+        float randomZoom = 1;
+        Vector2 appliedZoom = new Vector2(1,1);
         foreach (VideoFileData videoFileData in menu.finalVideoFilesDataWithMargins)
         {
             
@@ -158,7 +158,7 @@ public class ExportToCapcut : MonoBehaviour
         return videoDraft;
 
     }
-    private static Video CreateVideoData(Video previewVideoData,int duration,string materialName,string path,out string videoID)
+    private static Video CreateVideoData(Video previewVideoData,long duration,string materialName,string path,out string videoID)
     {
         string previewVideoInString = JsonConvert.SerializeObject(previewVideoData);
         Video videoData = JsonConvert.DeserializeObject<Video>(previewVideoInString);
@@ -171,7 +171,7 @@ public class ExportToCapcut : MonoBehaviour
         return videoData;
     }
 
-    private static Segment CreateSegment(Segment previewSegmentData,int sampleStartInCapcutMiliseconds, int sampleDurationInCapcutMiliseconds, int timelineStartInCapcutMiliseconds, int timelineDurationInCapcutMiliseconds, string videoID,string extraMaterialRefID,Vector2 zoomSize)
+    private static Segment CreateSegment(Segment previewSegmentData,long sampleStartInCapcutMiliseconds, long sampleDurationInCapcutMiliseconds, long timelineStartInCapcutMiliseconds, long timelineDurationInCapcutMiliseconds, string videoID,string extraMaterialRefID,Vector2 zoomSize)
     {
         string previewSegmentInString = JsonConvert.SerializeObject(previewSegmentData);
         Segment segmentData = JsonConvert.DeserializeObject<Segment>(previewSegmentInString);
@@ -211,8 +211,8 @@ public class ExportToCapcut : MonoBehaviour
 
     private void StandardEditedFileOrder(List<Video> videos, List<Segment> segments)
     {
-        int lastVideoEndingMilisecond = 25000;
-        int lastFragmentEndedMilisecond = 0;
+        long lastVideoEndingMilisecond = 25000;
+        long lastFragmentEndedMilisecond = 0;
         foreach (VideoFileData videoFileData in menu.finalVideoFilesDataWithMargins)
         {
             foreach (SpeakAndSilenceAudioData fragment in videoFileData.audioData)
