@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -23,6 +24,36 @@ public static class GetAudioClip
         IMediaInfo audioInfo = await FFmpeg.GetMediaInfo(outputFilePath);
         var audioDuration = audioInfo.Duration.TotalSeconds;
 
+        // Ajustar la duración del audio para que coincida con la del video
+        if (audioDuration != videoDuration)
+        {
+            string adjustedAudioPath = Path.Combine(Application.temporaryCachePath, "adjusted_" + Path.GetFileNameWithoutExtension(inputFilePath) + ".wav");
+
+            if (audioDuration > videoDuration)
+            {
+                // Recortar el audio si es más largo que el video
+                IConversion trimConversion = FFmpeg.Conversions.New()
+                    .AddParameter($"-t {videoDuration.ToString(CultureInfo.InvariantCulture)}")
+                    .AddParameter($"-i \"{outputFilePath}\" -c copy \"{adjustedAudioPath}\"");
+
+                await trimConversion.Start();
+            }
+            else
+            {
+                // Agregar silencio al principio del audio si es más corto que el video
+                double silenceDuration = videoDuration - audioDuration;
+                string silenceAudioPath = Path.Combine(Application.temporaryCachePath, "silence_" + Path.GetFileNameWithoutExtension(inputFilePath) + ".wav");
+
+                IConversion padConversion = FFmpeg.Conversions.New()
+                    .AddParameter($"-f lavfi -t {silenceDuration.ToString(CultureInfo.InvariantCulture)} -i anullsrc=r=44100:cl=mono -i \"{outputFilePath}\" -filter_complex \"[0][1]concat=n=2:v=0:a=1[out]\" -map \"[out]\" -t {videoDuration.ToString(CultureInfo.InvariantCulture)} -c:a pcm_s16le \"{silenceAudioPath}\"");
+
+                await padConversion.Start();
+                adjustedAudioPath = silenceAudioPath;
+            }
+
+            outputFilePath = adjustedAudioPath;
+        }
+
         return await LoadAudioClip(outputFilePath);
     }
 
@@ -30,16 +61,20 @@ public static class GetAudioClip
     {
         using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file://" + filePath, AudioType.WAV))
         {
-            await www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
+            var request = www.SendWebRequest();
+            while (!request.isDone)
             {
-                return DownloadHandlerAudioClip.GetContent(www);
+                await Task.Yield();
+            }
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError(www.error);
+                return null;
             }
             else
             {
-                Debug.LogError("Failed to load audio clip: " + www.error);
-                return null;
+                return DownloadHandlerAudioClip.GetContent(www);
             }
         }
     }
